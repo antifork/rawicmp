@@ -1,5 +1,5 @@
 - version 0.9.0 :
-Massive cleaning! I didn't touch this code from a lot of time and when
+Massive cleaning! I didn't touch this code  for a lot of time and when
 I saw it again  it seemed  to me just DIRTY!  So I decided to spend an
 afternoon just for giving it a new style... :)
 Fixed a typo on -R option which caused a segmentation fault.
