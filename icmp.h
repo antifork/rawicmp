@@ -80,8 +80,6 @@ struct ip_header_fields {
 	u_char              param_ptr;
 };
 
-struct ip_header_fields ip_header;
-
 struct options {
 	uint8_t        verbose;
 	uint8_t        spoof;
@@ -91,16 +89,36 @@ struct options {
 	unsigned int   count;
 };
 
+struct rtt_stats_t {
+	u_int32_t      min;
+	u_int32_t      max;
+	u_int32_t      sum;
+};
+
 extern unsigned short in_cksum(unsigned short *, int);
 uint32_t orig_timestamp(void);
 void resolve(struct sockaddr_in *, char *);
 struct ip *ip_hdr_make(unsigned char *, int, struct ip_header_fields *);
-struct icmp *icmp_hdr_make(unsigned char *, int, unsigned int, struct
-			   ip_header_fields *);
+struct icmp *icmp_hdr_make(unsigned char *, int, unsigned int, struct ip_header_fields *);
 int dlink_open(char *);
 int data_size(int);
-int Inet_pton(int, const char *, void *);
-void init_ipheader(struct ip_header_fields *);
+void init_and_parse_options(int, char **, struct options *, struct ip_header_fields *);
+void stats_report(int, struct rtt_stats_t);
+void init_rtt_stats(struct rtt_stats_t *);
+void init_dst(struct sockaddr_in *, struct ip_header_fields *);
+int Socket(int, int, int);
+void Setsockopt(int, int, int, const void *, socklen_t);
+int Select(int, fd_set *, fd_set *, fd_set *, struct timeval *);
+ssize_t Sendto(int, const void *, size_t, int, const struct sockaddr *, socklen_t);
+ssize_t Recvfrom(int, void *, size_t, int, struct sockaddr *, socklen_t *);
+int Dlink_open(char *);
+void *Calloc(size_t, size_t);
+void send_report(int, struct options, struct ip *, struct icmp *,
+                 struct ip_header_fields, unsigned char *, int);
+u_int32_t rtt_evaluate(u_int32_t);
+void update_rtt_stats(u_int32_t, struct rtt_stats_t *);
+void receive_report(int, struct options, struct ip *, struct icmp *,
+                    unsigned char *, int);
 int proto(char *);
 int icmp_reply(struct icmp *);
 void dump(const char *, int);

@@ -19,13 +19,12 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include <config.h>
+
 #include "icmp.h"
 #include "main.h"
 
 int main(int argc, char **argv)
 {
-
 	struct sockaddr_in 	to;
 	int 			sockd;          
 	int 			sd;             
@@ -35,34 +34,18 @@ int main(int argc, char **argv)
 	int 			optval = 1;    
 	struct options 		opt;           
 	struct ip_header_fields ip_header;     
-
+	struct rtt_stats_t      rtt_stats;
 
 	init_and_parse_options(argc, argv, &opt, &ip_header);
+	init_rtt_stats(&rtt_stats);
+	init_dst(&to, &ip_header);
 
-	if (!ip_header.dst.sin_addr.s_addr) {
-		help(argv[0]);
-		printf("Must specify IP destination address!\n\n");
-		exit(EXIT_FAILURE);
-	}
-
-	if ((sockd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
-		perror("Cannot open raw socket");
-		exit(EXIT_FAILURE);
-	}
-
-	if (setsockopt(sockd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(optval)) < 0) {
-		perror("setsockopt");
-		exit(EXIT_FAILURE);
-	}
-
-	if ((sd = dlink_open(opt.dev)) < 0) {
-		perror("dlink_open");
-		exit(EXIT_FAILURE);
-	}
-
-	init_dst(&to, &ip_header); 
+	sockd = Socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+	Setsockopt(sockd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(optval));
+	sd = Dlink_open(opt.dev);
 
 	packlen = sizeof(struct ip) + sizeof(struct icmp) + data_size(opt.type);
+
 
 	for (i = 0; i <= opt.count; i++) {
 
@@ -76,41 +59,21 @@ int main(int argc, char **argv)
 		fd_set                  readset;
 	        struct timeval          rec_timeout;
 		struct sockaddr_ll      from;
-		uint32_t                rtt_send;
+		uint32_t                t_send;
 	        uint32_t                rtt;
 
 
-		if ((buffer = (unsigned char *) calloc(packlen, 1)) == NULL) {
-			perror("calloc");
-			exit(EXIT_FAILURE);
-		}
+		buffer = (unsigned char *) Calloc(packlen, 1);
 		
 		ip = ip_hdr_make(buffer, opt.type, &ip_header);
 		icmp = icmp_hdr_make(buffer, opt.type, opt.code, &ip_header);
 
-		rtt_send = htonl(orig_timestamp());
+		t_send = htonl(orig_timestamp());
 
-		if ((res = sendto(sockd, (void *) buffer, packlen, 0,
-			    (struct sockaddr *) &to, sizeof(struct sockaddr))) < 0) {
-			perror("sendto");
-			exit(EXIT_FAILURE);
-		}
+		res = Sendto(sockd, (void *) buffer, packlen, 0,
+			     (struct sockaddr *) &to, sizeof(struct sockaddr));
 
-		printf("\nICMP request %d\n", i + 1);
-
-		if (opt.spoof)
-			printf("\nSpoofed source IP : %s",
-			       inet_ntoa(ip_header.src));
-
-		if (opt.verbose) {
-			verbose(ip, icmp);
-			if (opt.verbose > 1)
-				dump(buffer, packlen);
-		} else
-			printf
-			    ("\nSending an ICMP type %s to %s (amount of bytes %d)...",
-			     icmptype[opt.type],
-			     inet_ntoa(ip_header.dst.sin_addr), packlen);
+		send_report(i, opt, ip, icmp, ip_header, buffer, packlen);
 
 out_of_order:
 		memset(inbuffer, 0, sizeof(inbuffer));
@@ -125,12 +88,7 @@ out_of_order:
 		else
 			continue;
 
-		res = select(sd + 1, &readset, NULL, NULL, &rec_timeout);
-
-		if (res < 0) {
-			perror("select");
-			exit(EXIT_FAILURE);
-		} else if (res == 0) {
+		if ( (res = Select(sd + 1, &readset, NULL, NULL, &rec_timeout)) == 0) {
 			printf("\nNo reply received! (timeout expired)\n");
 			continue;
 		}
@@ -141,40 +99,26 @@ out_of_order:
 			struct icmp *icmp_hdr;
 			int         numbytes;
 
-			if ((numbytes = recvfrom(sd, inbuffer, sizeof(inbuffer), 0,
-				      (struct sockaddr *) &from, &fromlen)) < 0) {
-				perror("recvfrom");
-				exit(EXIT_FAILURE);
-			}
+			numbytes = Recvfrom(sd, inbuffer, sizeof(inbuffer), 0,
+					    (struct sockaddr *) &from, &fromlen);
 
-			rtt = htonl(orig_timestamp());
-			rtt -= rtt_send;
+			rtt = rtt_evaluate(t_send);
 
-			ip_hdr = (struct ip *) inbuffer;
-			icmp_hdr = (struct icmp *) (inbuffer + (ip_hdr->ip_hl << 2));
+			ip_hdr = (struct ip *)inbuffer;
+			icmp_hdr = (struct icmp *)(inbuffer + (ip_hdr->ip_hl << 2));
 
 			if ((from.sll_pkttype == PACKET_HOST)
 			    && (ip_hdr->ip_p == IPPROTO_ICMP)) {
 
-				if (icmp_reply(icmp_hdr)
-				    && icmp_hdr->icmp_seq != icmp->icmp_seq) {
+				if (icmp_reply(icmp_hdr) && 
+				    icmp_hdr->icmp_seq != icmp->icmp_seq) {
 					out_of_order_pkts++;
 					goto out_of_order;
 				}
 
-				if (opt.verbose) {
-					printf("\nICMP reply %d\n", i + 1);
-					verbose(ip_hdr, icmp_hdr);
-					if (opt.verbose > 1)
-						dump(inbuffer, numbytes);
-				} else
-					printf
-					    ("\nReceived an ICMP type %s from %s (amount of bytes %d)",
-					     icmptype[icmp_hdr->icmp_type],
-					     inet_ntoa(ip_hdr->ip_src),
-					     ntohs(ip_hdr->ip_len));
-
-				printf("\nrtt = %u ms", rtt);
+				update_rtt_stats(rtt, &rtt_stats);
+				receive_report(i, opt, ip_hdr, icmp_hdr, inbuffer, numbytes);
+				printf("\nRTT = %u ms", rtt);
 				response++;
 			}
 
@@ -183,6 +127,7 @@ out_of_order:
 			sleep(SEND_TIMEOUT);
 		}
 	}
-	printf("\nReceived packets : %d\n\n", response);
+
+	stats_report(response, rtt_stats);
 	return EXIT_SUCCESS;
 }

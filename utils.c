@@ -23,6 +23,10 @@
 #include "icmp.h"
 #include "option.h"
 
+/* 
+ * Initialization functions
+ */
+
 void init_ipheader(struct ip_header_fields *iphf)
 {
 	iphf->tos = 0;
@@ -55,9 +59,44 @@ void init_opt(struct options *opt)
 
 void init_dst(struct sockaddr_in *to, struct ip_header_fields *h)
 {
+
+	if (!h->dst.sin_addr.s_addr) {
+		printf("Must specify IP destination address!\n\n");
+                exit(EXIT_FAILURE);
+        }
+
 	memset(to, 0, sizeof(struct sockaddr_in));
         to->sin_family = AF_INET;
         to->sin_addr = h->dst.sin_addr;
+}
+
+/* 
+ * RTT evaluation functions
+ */
+
+void init_rtt_stats(struct rtt_stats_t *stats)
+{
+
+	stats->min = ~0;
+	stats->max = stats->sum = 0;
+}
+
+
+void update_rtt_stats(u_int32_t rtt, struct rtt_stats_t *stats)
+{
+
+	if (rtt < stats->min)
+		stats->min = rtt;
+	if (rtt > stats->max)
+		stats->max = rtt;
+	stats->sum += rtt;
+}
+
+
+u_int32_t rtt_evaluate(u_int32_t t_send)
+{
+
+        return (htonl(orig_timestamp()) - t_send);
 }
 
 
@@ -76,9 +115,75 @@ int proto(char *protocol)
 	return EXIT_SUCCESS;
 }
 
+
 /*
- * inet_pton(3) wrapper
+ * Some useful wrappers
  */
+
+
+int Socket(int domain, int type, int protocol)
+{
+
+	int sockfd;
+
+	if ( (sockfd = socket(domain, type, protocol)) < 0) {
+		perror("socket");
+		exit(EXIT_FAILURE);
+	}
+
+	return sockfd;
+}
+
+
+void Setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen)
+{
+
+	if (setsockopt(s, level, optname, optval, optlen)) {
+		perror("setsockopt");
+                exit(EXIT_FAILURE);
+        }
+}
+
+
+int Select(int n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout) 
+{
+
+	int res;
+	
+	if ( (res = select(n, readfds, writefds, exceptfds, timeout)) < 0) {
+		perror("select");
+		exit(EXIT_FAILURE);
+	}
+
+	return res;
+}
+
+
+ssize_t Sendto(int s, const void *msg, size_t len, int flags, const struct sockaddr *to, socklen_t tolen) 
+{
+	ssize_t res;
+
+	if ( (res = sendto(s, msg, len, flags, to, tolen)) < 0) {
+		perror("sendto");
+		exit(EXIT_FAILURE);
+	}
+
+	return res;
+}
+
+
+ssize_t Recvfrom(int s, void *buf, size_t len, int flags, struct sockaddr *from, socklen_t *fromlen)
+{
+	ssize_t res;
+
+	if ( (res = recvfrom(s, buf, len, flags, from, fromlen)) < 0) {
+		perror("recvfrom");
+		exit(EXIT_FAILURE);
+	}
+
+	return res;
+}
+
 
 int Inet_pton(int af, const char *src, void *dst)
 {
@@ -96,6 +201,32 @@ int Inet_pton(int af, const char *src, void *dst)
 	return (1);
 }
 
+
+int Dlink_open(char *dev)
+{
+	int sd;
+
+	if ((sd = dlink_open(dev)) < 0) {
+                perror("dlink_open");
+                exit(EXIT_FAILURE);
+        }
+
+	return sd;
+}
+
+
+void *Calloc(size_t nmemb, size_t size) 
+{
+
+	void *buffer;
+
+	if ((buffer = calloc(nmemb, size)) == NULL) {
+		perror("calloc");
+		exit(EXIT_FAILURE);
+	}
+
+	return buffer;
+}
 
 /*
  * Functions for verbose output
@@ -198,10 +329,60 @@ static inline void verbose_icmphdr(struct icmp *icmphdr)
 }
 
 
-void verbose(struct ip *ip, struct icmp *icmp)
+static inline void generic_report(struct options opt, struct ip *ip, struct icmp *icmp,
+				  unsigned char *buffer, int packlen)
 {
 	verbose_iphdr(ip);
 	verbose_icmphdr(icmp);
+	if (opt.verbose > 1)
+		dump(buffer, packlen);
+}
+
+
+void send_report(int i, struct options opt, struct ip *ip, struct icmp *icmp,
+		 struct ip_header_fields ip_header, unsigned char *buffer, int packlen)
+{
+
+	extern char *icmptype[];
+
+	printf("\n\nICMP request %d\n", i + 1);
+	printf("==================\n");
+	if (opt.spoof)
+		printf("Spoofed source IP : %s\n", inet_ntoa(ip_header.src));
+
+	if (opt.verbose) 
+		generic_report(opt, ip, icmp, buffer, packlen);
+	else
+		printf("\nSending an ICMP type %s to %s (amount of bytes %d)...\n",
+		       icmptype[opt.type], inet_ntoa(ip_header.dst.sin_addr), packlen);
+}
+
+
+void receive_report(int i, struct options opt, struct ip *ip, struct icmp *icmp,
+		    unsigned char *buffer, int packlen)
+{
+	extern char *icmptype[];
+
+	printf("\nICMP reply %d\n", i + 1);
+	printf("==================\n");
+	if (opt.verbose) 
+		generic_report(opt, ip, icmp, buffer, packlen);
+	else
+		printf("Received an ICMP type %s from %s (amount of bytes %d)",
+		       icmptype[icmp->icmp_type], inet_ntoa(ip->ip_src), ntohs(ip->ip_len));
+}
+
+
+void stats_report(int n, struct rtt_stats_t stats)
+{
+
+	printf("\nReceived packets : %d\n", n);
+
+        if (n)
+                printf("RTT : min/avg/max %d ms/%d ms/%d ms\n",
+                       stats.min, stats.sum/n, stats.max);
+	printf("\n");
+
 }
 
 
@@ -260,7 +441,8 @@ void parse_options(int argc, char **argv, struct options *opt, struct ip_header_
                         opt->code = atoi(optarg);
                         break;
                 case 's':
-                     Inet_pton(AF_INET, optarg, &ip_header->src);
+			Inet_pton(AF_INET, optarg, &ip_header->src);
+			opt->spoof = 1;
                         break;
                 case 'd':
                         resolve(&ip_header->dst, optarg);
