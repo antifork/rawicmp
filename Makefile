@@ -1,10 +1,9 @@
 # $Makefile$
 # $Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>$
-# $Copyright (C) 2001 by Angelo Dell'Aera$
+# $Copyright (C) 2001-02 by Angelo Dell'Aera$
 # $This software is under GPL version 2 of license$
 
 CC= gcc
-CCOPT2=
 CCOPT= -O2 -Wall    
 DEBUG= 
 PREFIX= /usr/local/bin
