@@ -171,12 +171,11 @@ int main(int argc,char **argv) {
 
   if ( (sd = dlink_open(dev)) < 0) {
     perror("dlink_open");
-    close(sockd);
-    close(sd);
     exit(EXIT_FAILURE);
   }
 
-packlen = sizeof(struct ip)+sizeof(struct icmp)+data_size(type);
+ packlen = sizeof(struct ip)+sizeof(struct icmp)+data_size(type);
+ FD_ZERO(&readset);
 
  for (i = 0; i <= count; i++) {
 
@@ -196,10 +195,7 @@ packlen = sizeof(struct ip)+sizeof(struct icmp)+data_size(type);
 
 	if ( (res = sendto(sockd, (void *)buffer, packlen,0, 
 		(struct sockaddr *)&to, sizeof(struct sockaddr))) < 0) {
-       		
 		perror("sendto");
-       		close(sockd);
-       		free(buffer);
        		exit(EXIT_FAILURE);
 	}
 
@@ -222,7 +218,6 @@ packlen = sizeof(struct ip)+sizeof(struct icmp)+data_size(type);
 	memset(inbuffer,0,sizeof(inbuffer));
 	fromlen = sizeof(struct sockaddr_ll);
 
-	FD_ZERO(&readset);
 	FD_SET(sd, &readset);
 	rec_timeout.tv_sec  = RECEIVE_TIMEOUT;
 	rec_timeout.tv_usec = 0;
