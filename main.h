@@ -1,4 +1,4 @@
-/* opttyp.h
+/* main.h
 **
 ** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the help
 ** he gave me in writing this code.

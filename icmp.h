@@ -40,7 +40,6 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <limits.h>
-#include <setjmp.h>
 #include <errno.h>
 
 #define MAXBUFFER 	256
