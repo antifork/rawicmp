@@ -72,7 +72,7 @@ configure:2013: gcc -V </dev/null >&5
 gcc: argument to `-V' is missing
 configure:2016: $? = 1
 configure:2040: checking for C compiler default output
-configure:2043: gcc -O2 -Wall   conftest.c  >&5
+configure:2043: gcc    conftest.c  >&5
 configure:2046: $? = 0
 configure:2092: result: a.out
 configure:2097: checking whether the C compiler works
@@ -82,15 +82,15 @@ configure:2123: result: yes
 configure:2130: checking whether we are cross compiling
 configure:2132: result: no
 configure:2135: checking for suffix of executables
-configure:2137: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:2137: gcc -o conftest    conftest.c  >&5
 configure:2140: $? = 0
 configure:2165: result: 
 configure:2171: checking for suffix of object files
-configure:2193: gcc -c -O2 -Wall  conftest.c >&5
+configure:2193: gcc -c   conftest.c >&5
 configure:2196: $? = 0
 configure:2218: result: o
 configure:2222: checking whether we are using the GNU C compiler
-configure:2247: gcc -c -O2 -Wall  conftest.c >&5
+configure:2247: gcc -c   conftest.c >&5
 configure:2250: $? = 0
 configure:2253: test -s conftest.o
 configure:2256: $? = 0
@@ -102,12 +102,12 @@ configure:2303: test -s conftest.o
 configure:2306: $? = 0
 configure:2317: result: yes
 configure:2334: checking for gcc option to accept ANSI C
-configure:2395: gcc  -c -O2 -Wall  conftest.c >&5
+configure:2395: gcc  -c -g -O2  conftest.c >&5
 configure:2398: $? = 0
 configure:2401: test -s conftest.o
 configure:2404: $? = 0
 configure:2422: result: none needed
-configure:2440: gcc -c -O2 -Wall  conftest.c >&5
+configure:2440: gcc -c -g -O2  conftest.c >&5
 conftest.c:2: syntax error before "me"
 configure:2443: $? = 1
 configure: failed program was:
@@ -159,73 +159,71 @@ configure: failed program was:
 configure:2944: checking for egrep
 configure:2954: result: grep -E
 configure:2959: checking for ANSI C header files
-configure:2985: gcc -c -O2 -Wall  conftest.c >&5
+configure:2985: gcc -c -g -O2  conftest.c >&5
 configure:2988: $? = 0
 configure:2991: test -s conftest.o
 configure:2994: $? = 0
-configure:3083: gcc -o conftest -O2 -Wall   conftest.c  >&5
-configure: In function `main':
-configure:3081: warning: implicit declaration of function `exit'
+configure:3083: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3086: $? = 0
 configure:3088: ./conftest
 configure:3091: $? = 0
 configure:3106: result: yes
 configure:3130: checking for sys/types.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for sys/stat.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for stdlib.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for string.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for memory.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for strings.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for inttypes.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for stdint.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3130: checking for unistd.h
-configure:3147: gcc -c -O2 -Wall  conftest.c >&5
+configure:3147: gcc -c -g -O2  conftest.c >&5
 configure:3150: $? = 0
 configure:3153: test -s conftest.o
 configure:3156: $? = 0
 configure:3167: result: yes
 configure:3202: checking arpa/inet.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -237,7 +235,7 @@ configure:3274: result: yes
 configure:3310: checking for arpa/inet.h
 configure:3317: result: yes
 configure:3202: checking limits.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -249,7 +247,7 @@ configure:3274: result: yes
 configure:3310: checking for limits.h
 configure:3317: result: yes
 configure:3202: checking netdb.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -261,7 +259,7 @@ configure:3274: result: yes
 configure:3310: checking for netdb.h
 configure:3317: result: yes
 configure:3202: checking netinet/in.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -277,7 +275,7 @@ configure:3198: result: yes
 configure:3193: checking for string.h
 configure:3198: result: yes
 configure:3202: checking sys/ioctl.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -289,7 +287,7 @@ configure:3274: result: yes
 configure:3310: checking for sys/ioctl.h
 configure:3317: result: yes
 configure:3202: checking sys/socket.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -301,7 +299,7 @@ configure:3274: result: yes
 configure:3310: checking for sys/socket.h
 configure:3317: result: yes
 configure:3202: checking sys/time.h usability
-configure:3215: gcc -c -O2 -Wall  conftest.c >&5
+configure:3215: gcc -c -g -O2  conftest.c >&5
 configure:3218: $? = 0
 configure:3221: test -s conftest.o
 configure:3224: $? = 0
@@ -315,20 +313,13 @@ configure:3317: result: yes
 configure:3193: checking for unistd.h
 configure:3198: result: yes
 configure:3332: checking for an ANSI C-conforming const
-configure:3400: gcc -c -O2 -Wall  conftest.c >&5
-configure: In function `main':
-configure:3394: warning: unused variable `s'
-configure:3414: warning: unused variable `foo'
-configure:3375: warning: unused variable `x'
-configure:3381: warning: unused variable `zero'
-configure:3393: warning: `t' might be used uninitialized in this function
-configure:3411: warning: `b' might be used uninitialized in this function
+configure:3400: gcc -c -g -O2  conftest.c >&5
 configure:3403: $? = 0
 configure:3406: test -s conftest.o
 configure:3409: $? = 0
 configure:3420: result: yes
 configure:3430: checking whether time.h and sys/time.h may both be included
-configure:3456: gcc -c -O2 -Wall  conftest.c >&5
+configure:3456: gcc -c -g -O2  conftest.c >&5
 configure:3459: $? = 0
 configure:3462: test -s conftest.o
 configure:3465: $? = 0
@@ -336,44 +327,44 @@ configure:3476: result: yes
 configure:3489: checking whether gcc needs -traditional
 configure:3533: result: no
 configure:3550: checking for gethostbyname
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for gettimeofday
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for inet_ntoa
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for memset
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3605: warning: conflicting types for built-in function `memset'
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for select
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for socket
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
 configure:3620: result: yes
 configure:3550: checking for strdup
-configure:3600: gcc -o conftest -O2 -Wall   conftest.c  >&5
+configure:3600: gcc -o conftest -g -O2   conftest.c  >&5
 configure:3603: $? = 0
 configure:3606: test -s conftest
 configure:3609: $? = 0
@@ -408,8 +399,8 @@ ac_cv_c_compiler_gnu=yes
 ac_cv_c_const=yes
 ac_cv_env_CC_set=
 ac_cv_env_CC_value=
-ac_cv_env_CFLAGS_set=set
-ac_cv_env_CFLAGS_value='-O2 -Wall'
+ac_cv_env_CFLAGS_set=
+ac_cv_env_CFLAGS_value=
 ac_cv_env_CPPFLAGS_set=
 ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CPP_set=
@@ -475,7 +466,7 @@ AUTOMAKE='${SHELL} /home/buffer/rawicmp/missing --run automake-1.7'
 AWK='gawk'
 CC='gcc'
 CCDEPMODE='depmode=gcc3'
-CFLAGS='-O2 -Wall'
+CFLAGS='-g -O2'
 CPP='gcc -E'
 CPPFLAGS=''
 CYGPATH_W='echo'
