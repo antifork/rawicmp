@@ -2,12 +2,13 @@ Installation is quite simple. First of all you should run
 
 	./configure
 
-Then take a look to generated Makefile and you think everything
-is ok than compile through
+Then take a look to generated Makefile and if you think 
+everything is ok than compile through
 
 	make
 
 Now let's install. You need superuser privileges. So
+
 	su
 	<root password>
 	make install

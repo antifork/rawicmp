@@ -38,7 +38,7 @@ icmp.o : \
  /usr/include/string.h /usr/include/bits/string.h \
  /usr/include/bits/string2.h /usr/include/errno.h \
  /usr/include/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/asm/errno.h main.h
+ /usr/include/asm/errno.h main.h option.h
 icmp.c :
 config.h :
 icmp.h :
@@ -114,3 +114,4 @@ icmp.h :
 /usr/include/linux/errno.h :
 /usr/include/asm/errno.h :
 main.h :
+option.h :

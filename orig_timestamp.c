@@ -31,15 +31,14 @@
 **requests.
 */
 
-uint32_t orig_timestamp(void) {
+uint32_t orig_timestamp(void)
+{
 
 	struct timeval tv;
 	uint32_t msec;
 
-        gettimeofday(&tv, NULL);
-        msec = htonl((tv.tv_sec % 86400) * 1000 + tv.tv_usec / 1000);
-        return msec;
+	gettimeofday(&tv, NULL);
+	msec = htonl((tv.tv_sec % 86400) * 1000 + tv.tv_usec / 1000);
+	return msec;
 
 }
-
-

@@ -7,10 +7,10 @@ Minor bug fixes.
 
 -version 0.2.0 : 
 There were many  changes in handling and building  IP header.Now I use
-struct ip_header_fields  for this purpose.I needed a  solution of this
+struct ip_header_fields  for this purpose. I needed a solution of this
 kind because I wanted ip_hdr_make() could work even when I'll add some
 other   features   such  as   IP   options   without  modifying   main
-(icmp.c).After few test I can say it works well.  
+(icmp.c). After few test I can say it works well.  
 Now it's  possible to  generate some ICMP  error messages such  as TTL
 exceeded and source quench.In this case  a fake IP header is built and
 it is  located after  ICMP  header just like  it happens in  real ICMP
@@ -25,7 +25,7 @@ Minor bug fixes.
 -version 0.1.4 :
 Introduced  a new  feature.Now when  -s  option is  not specified  the
 program  reaches  to  obtain  IP  source  (reading  it  directly  from
-interface)  and writing  it in  IP header.In  this way  the  option -s
+interface)  and writing  it in IP header. In  this way  the  option -s
 should  be  used  only  if  one  wants to  spoof  source  IP  address.
 Introduced address name resolution for -d option.
 
@@ -62,7 +62,7 @@ receiving socket linked to a specific interface.
 Fixed the previous problem.
 
 -version 0.0.1 :
-The code is  not good at all!It isn't able to  receive replies to ICMP
+The code is not good at all! It isn't able to  receive replies to ICMP
 queries.
 
 

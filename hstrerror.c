@@ -20,27 +20,28 @@
 **
 ** This code was written by W. Richard Stevens
 **
-*/ 
+*/
 
 #include <netdb.h>
 #include "icmp.h"
 
-const char *hstrerror(int err) {
-	
-	if (err == 0) 
-		return("no error");
+const char *hstrerror(int err)
+{
+
+	if (err == 0)
+		return ("no error");
 
 	if (err == HOST_NOT_FOUND)
-		return("Unknown host");
+		return ("Unknown host");
 
 	if (err == TRY_AGAIN)
-		return("Hostname lookup failure");
+		return ("Hostname lookup failure");
 
 	if (err == NO_RECOVERY)
-		return("Unknown server error");
+		return ("Unknown server error");
 
 	if (err == NO_DATA)
-        	return("No address associated with name");
-	
-	return("unknown error");
+		return ("No address associated with name");
+
+	return ("unknown error");
 }

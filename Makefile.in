@@ -45,7 +45,7 @@ AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
-CFLAGS = -O2 -Wall
+CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
@@ -102,7 +102,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 bin_PROGRAMS = rawicmp
-rawicmp_SOURCES = icmp.c iphdr.c resolve.c datasize.c icmp_cksum.c orig_timestamp.c usage.c hstrerror.c icmphdr.c receive.c utils.c
+rawicmp_SOURCES = icmp.c iphdr.c resolve.c datasize.c icmp_cksum.c orig_timestamp.c usage.c hstrerror.c icmphdr.c receive.c utils.c dump.c 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -114,7 +114,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_rawicmp_OBJECTS = icmp.$(OBJEXT) iphdr.$(OBJEXT) resolve.$(OBJEXT) \
 	datasize.$(OBJEXT) icmp_cksum.$(OBJEXT) \
 	orig_timestamp.$(OBJEXT) usage.$(OBJEXT) hstrerror.$(OBJEXT) \
-	icmphdr.$(OBJEXT) receive.$(OBJEXT) utils.$(OBJEXT)
+	icmphdr.$(OBJEXT) receive.$(OBJEXT) utils.$(OBJEXT) \
+	dump.$(OBJEXT)
 rawicmp_OBJECTS = $(am_rawicmp_OBJECTS)
 rawicmp_LDADD = $(LDADD)
 rawicmp_DEPENDENCIES =
@@ -123,10 +124,10 @@ rawicmp_LDFLAGS =
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/datasize.Po ./$(DEPDIR)/hstrerror.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/icmp.Po ./$(DEPDIR)/icmp_cksum.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/icmphdr.Po ./$(DEPDIR)/iphdr.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/orig_timestamp.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/datasize.Po ./$(DEPDIR)/dump.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/hstrerror.Po ./$(DEPDIR)/icmp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/icmp_cksum.Po ./$(DEPDIR)/icmphdr.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/iphdr.Po ./$(DEPDIR)/orig_timestamp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/receive.Po ./$(DEPDIR)/resolve.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/usage.Po ./$(DEPDIR)/utils.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -135,7 +136,7 @@ CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(rawicmp_SOURCES)
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
-	Makefile.in NEWS THANKS TODO aclocal.m4 config.h.in configure \
+	Makefile.in NEWS THANKS aclocal.m4 config.h.in configure \
 	configure.ac depcomp install-sh missing mkinstalldirs
 SOURCES = $(rawicmp_SOURCES)
 
@@ -212,6 +213,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/datasize.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dump.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hstrerror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icmp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icmp_cksum.Po@am__quote@

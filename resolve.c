@@ -26,7 +26,8 @@
 #include <netdb.h>
 #include "icmp.h"
 
-void resolve(struct sockaddr_in *address,char *hostname) {
+void resolve(struct sockaddr_in *address, char *hostname)
+{
 
 	struct hostent *host;
 
@@ -34,16 +35,14 @@ void resolve(struct sockaddr_in *address,char *hostname) {
 	address->sin_family = AF_INET;
 	address->sin_addr.s_addr = inet_addr(hostname);
 
-	if ( (int)address->sin_addr.s_addr == -1) {
-		if ( (host = gethostbyname(hostname)) == NULL) { 
+	if ((int) address->sin_addr.s_addr == -1) {
+		if ((host = gethostbyname(hostname)) == NULL) {
 			printf("gethostbyname error for host : %s %s\n",
 			       hostname, hstrerror(h_errno));
 			exit(EXIT_FAILURE);
-		}
-		else 
-			memcpy(&address->sin_addr, host->h_addr, host->h_length);
+		} else
+			memcpy(&address->sin_addr, host->h_addr,
+			       host->h_length);
 	}
 
 }
-
-
