@@ -3,7 +3,7 @@
 ** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the help 
 ** he gave me in writing this code.
 **
-** Copyright (C) 2001 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>  
+** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>  
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <limits.h>
+#include <setjmp.h>
 #include <errno.h>
 
 #define MAXBUFFER 	256
@@ -79,6 +80,8 @@ struct ip_header_fields {
 			uint16_t	      link_mtu;
 			u_char		      param_ptr;
 			};
+
+sigjmp_buf	buf;
 
 extern unsigned short in_cksum(unsigned short *,int);  
 uint32_t orig_timestamp(void);

@@ -3,7 +3,7 @@
 ** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the help
 ** he gave me in writing this code.
 **
-** Copyright (C) 2001 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>
+** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 #include <signal.h>
 #include <getopt.h>
+
 
 struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},

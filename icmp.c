@@ -4,7 +4,7 @@
 ** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the 
 ** help he gave me in writing this code.
 **
-** Copyright (C) 2001 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>            
+** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>            
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -36,16 +36,16 @@ int main(int argc,char **argv) {
   int                      sockd;
   int                      sd;
   int                      res;
-  int                      i;
+  volatile int             i;
   int                      packlen;
-  int	                   count = 0;
-  int                      response = 0;
+  volatile int	           count = 0;
+  volatile int             response = 0;
   uint32_t                 rtt_send = 0;
   uint32_t                 rtt = 0;
-  uint8_t                  verbose=0;
-  uint8_t		   spoof=0;
-  int                      type = ICMP_ECHO;
-  unsigned int 	           code = 0;
+  volatile uint8_t         verbose = 0;
+  volatile uint8_t         spoof = 0;
+  volatile int             type = ICMP_ECHO;
+  volatile unsigned int    code = 0;
   char                     *dev = NULL;
   char                     *program_name = argv[0];
   struct ip_header_fields  ip_header;
@@ -55,7 +55,7 @@ int main(int argc,char **argv) {
   char                     inbuffer[MAXBUFFER];
   int                      numbytes;
   int                      fromlen;
-  int			   optval=1;
+  int			   optval = 1;
 
   init_ipheader(&ip_header);
 
@@ -221,43 +221,51 @@ packlen = sizeof(struct ip)+sizeof(struct icmp)+data_size(type);
 	fromlen = sizeof(struct sockaddr_ll);
 	Signal(SIGALRM,sig_alrm);
 
+	if (sigsetjmp(buf, 1) != 0) {
+	  printf("\nNo reply received! (timeout expired)\n");
+	  continue;
+        }
+	
 	alarm(RECEIVE_TIMEOUT);
 	if ( (numbytes = recvfrom(sd,inbuffer,sizeof(inbuffer),0,
 				  (struct sockaddr *)&from,&fromlen)) < 0) {
-	  if (errno == EINTR) 
-	    printf("\nNo reply received! (timeout expired)\n");
-	  else {
+	  if (errno == EINTR) {	 /* just in case ... */ 
+	     printf("\nNo reply received! (timeout expired)\n");
+             continue;
+          }
+	  else {                 /* syscall error */ 
+	    alarm(0);
 	    perror("recvfrom");
 	    exit(EXIT_FAILURE);
 	  }
 	}
-	else {
-	  alarm(0);
-	  rtt = htonl(orig_timestamp());
-	  rtt -= rtt_send;
+	
+	alarm(0);                /* syscall successfull */ 
+	rtt = htonl(orig_timestamp());
+	rtt -= rtt_send;
 	  
-	  ip_hdr = (struct ip *)inbuffer;
+        ip_hdr = (struct ip *)inbuffer;
+	icmp_hdr = (struct icmp *)(inbuffer+(ip_hdr->ip_hl << 2));
 	  
-	  if ((from.sll_pkttype == PACKET_HOST) && (ip_hdr->ip_p == IPPROTO_ICMP)) {
+	if ((from.sll_pkttype == PACKET_HOST) && (ip_hdr->ip_p == 
+		IPPROTO_ICMP) && (icmp_hdr->icmp_seq == icmp->icmp_seq)) {
 	    
-	    icmp_hdr = (struct icmp *)(inbuffer+(ip_hdr->ip_hl << 2));
-	    
-	    if (verbose) {
-	      printf("\n\nReceived ICMP packet fields : \n");
-	      printf("----------------------------- \n");
-	      verbose_iphdr(ip_hdr);
-	      verbose_icmphdr(icmp_hdr);
-	    }
-	    else 
-	      printf("\nReceived an ICMP type %s from %s (amount of bytes %d)",
-		     icmptype[icmp_hdr->icmp_type],inet_ntoa(ip_header.dst.sin_addr),
-		     ntohs(ip_hdr->ip_len));
-	    
-	    printf("\nrtt = %u ms",
-		   rtt);
-	    response++;
+	  if (verbose) {
+	    printf("\n\nReceived ICMP packet fields : \n");
+	    printf("----------------------------- \n");
+	    verbose_iphdr(ip_hdr);
+	    verbose_icmphdr(icmp_hdr);
 	  }
+	  else 
+	    printf("\nReceived an ICMP type %s from %s (amount of bytes %d)",
+		   icmptype[icmp_hdr->icmp_type],inet_ntoa(ip_header.dst.sin_addr),
+		   ntohs(ip_hdr->ip_len));
+	    
+	  printf("\nrtt = %u ms",
+		 rtt);
+	  response++;
 	}
+ 
 	printf("\n");
 	free(buffer);
 	sleep(SEND_TIMEOUT);

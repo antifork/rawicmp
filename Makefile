@@ -4,6 +4,7 @@
 # $This software is under GPL version 2 of license$
 
 CC= gcc
+CCOPT2=
 CCOPT= -O2 -Wall    
 DEBUG= 
 PREFIX= /usr/local/bin
