@@ -33,30 +33,30 @@
 
 struct ip *ip_hdr_make(unsigned char *buf,int icmp_type,struct ip_header_fields *ip_head) {
 
- struct ip *ip_pt=(struct ip *)buf;
+	struct ip *ip_pt=(struct ip *)buf;
 
- ip_pt->ip_v            = IPVERSION;
- ip_pt->ip_hl           = 5;
- ip_pt->ip_tos          = 0;
- ip_pt->ip_len          = htons(sizeof(struct ip)+sizeof(struct icmp)
-				+data_size(icmp_type));
+	ip_pt->ip_v            = IPVERSION;
+	ip_pt->ip_hl           = 5;
+	ip_pt->ip_tos          = 0;
+	ip_pt->ip_len          = htons(sizeof(struct ip) + sizeof(struct icmp)
+				       + data_size(icmp_type));
 
- ip_pt->ip_id  		= (!ip_head->id)
-				? htons(rand())
-				: htons(ip_head->id);
+	ip_pt->ip_id  		= (!ip_head->id)
+		? htons(rand())
+		: htons(ip_head->id);
 
- ip_pt->ip_p            = IPPROTO_ICMP;
+	ip_pt->ip_p            = IPPROTO_ICMP;
 
- ip_pt->ip_ttl  	= (ip_head->ttl == IPDEFTTL)
-				? IPDEFTTL
-				: ip_head->ttl;
+	ip_pt->ip_ttl  	= (ip_head->ttl == IPDEFTTL)
+		? IPDEFTTL
+		: ip_head->ttl;
 
- ip_pt->ip_sum          = 0;
- ip_pt->ip_off          = htons(IP_DF);
- ip_pt->ip_dst.s_addr   = ip_head->dst.sin_addr.s_addr;
- ip_pt->ip_src          = ip_head->src;
+	ip_pt->ip_sum          = 0;
+	ip_pt->ip_off          = htons(IP_DF);
+	ip_pt->ip_dst.s_addr   = ip_head->dst.sin_addr.s_addr;
+	ip_pt->ip_src          = ip_head->src;
 
- return(ip_pt);
+	return(ip_pt);
 
 }
 
@@ -66,9 +66,9 @@ struct ip *ip_hdr_make(unsigned char *buf,int icmp_type,struct ip_header_fields 
 
 void verbose_iphdr(struct ip *iphdr) {
 
-  printf("IP Identification Number : %d\n",ntohs(iphdr->ip_id));
-  printf("Time To Live : %d\n",iphdr->ip_ttl);
-  return;
+	printf("IP Identification Number : %d\n", ntohs(iphdr->ip_id));
+	printf("Time To Live : %d\n", iphdr->ip_ttl);
+	return;
 }
 
 

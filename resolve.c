@@ -28,20 +28,21 @@
 
 void resolve(struct sockaddr_in *address,char *hostname) {
 
-  struct hostent *host;
+	struct hostent *host;
 
-  memset(address,0,sizeof(struct sockaddr_in));
-  address->sin_family = AF_INET;
-  address->sin_addr.s_addr = inet_addr(hostname);
+	memset(address, 0, sizeof(struct sockaddr_in));
+	address->sin_family = AF_INET;
+	address->sin_addr.s_addr = inet_addr(hostname);
 
-  if ( (int)address->sin_addr.s_addr == -1) {
-    if ( (host=gethostbyname(hostname)) == NULL) { 
-      printf("gethostbyname error for host : %s %s\n",hostname,hstrerror(h_errno));
-      exit(EXIT_FAILURE);
-    }
-    else 
-      memcpy(&address->sin_addr,host->h_addr,host->h_length);
-  }
+	if ( (int)address->sin_addr.s_addr == -1) {
+		if ( (host = gethostbyname(hostname)) == NULL) { 
+			printf("gethostbyname error for host : %s %s\n",
+			       hostname, hstrerror(h_errno));
+			exit(EXIT_FAILURE);
+		}
+		else 
+			memcpy(&address->sin_addr, host->h_addr, host->h_length);
+	}
 
 }
 

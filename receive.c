@@ -27,39 +27,40 @@
 
 int dlink_open(char *device) {
 
-int 			sockd;
-int                     res;
-struct sockaddr_ll 	ll;
-struct ifreq		ifr;
+	int 			sockd;
+	int                     res;
+	struct sockaddr_ll 	ll;
+	struct ifreq		ifr;
 
-if ( (sockd = socket(PF_PACKET,SOCK_DGRAM,htons(ETH_P_IP))) < 0) {
-  perror("socket error");
-  return -1;
-}
+	if ( (sockd = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_IP))) < 0) {
+		perror("socket error");
+		return -1;
+	}
 
-if (device != NULL) {
-  memset(&ll,0,sizeof(struct sockaddr_ll));
-  memset(&ifr,0,sizeof(struct ifreq));
+	if (device != NULL) {
+		memset(&ll, 0, sizeof(struct sockaddr_ll));
+		memset(&ifr, 0, sizeof(struct ifreq));
 
-  strncpy(ifr.ifr_name,device,IFNAMSIZ);
-  ifr.ifr_name[IFNAMSIZ-1] = '\0';
+		strncpy(ifr.ifr_name, device, IFNAMSIZ);
+		ifr.ifr_name[IFNAMSIZ-1] = '\0';
 
-  if ( (res = ioctl(sockd,SIOCGIFINDEX,&ifr)) < 0) {
-    perror("ioctl");
-    close(sockd);
-    return (-1);
-  }
+		if ( (res = ioctl(sockd, SIOCGIFINDEX, &ifr)) < 0) {
+			perror("ioctl");
+			close(sockd);
+			return (-1);
+		}
 
-  ll.sll_family = AF_PACKET;
-  ll.sll_protocol = htons(ETH_P_IP);
-  ll.sll_ifindex = ifr.ifr_ifindex;
+		ll.sll_family = AF_PACKET;
+		ll.sll_protocol = htons(ETH_P_IP);
+		ll.sll_ifindex = ifr.ifr_ifindex;
 
-  if ( (res = bind(sockd,(struct sockaddr *)&ll,sizeof(struct sockaddr_ll))) < 0){
-    perror("bind");
-    close(sockd);
-    return (-1);
-  }
-}
+		if ( (res = bind(sockd, (struct sockaddr *)&ll,
+				 sizeof(struct sockaddr_ll))) < 0){
+			perror("bind");
+			close(sockd);
+			return (-1);
+		}
+	}
 
- return(sockd);
+	return(sockd);
 }

@@ -42,5 +42,5 @@ const char *hstrerror(int err) {
 	if (err == NO_DATA)
         	return("No address associated with name");
 	
-		return("unknown error");
+	return("unknown error");
 }

@@ -28,55 +28,55 @@ USA.
 
 void init_ipheader(struct ip_header_fields *iphf) {
 
-  iphf->tos                  = 0;
-  iphf->length               = 0;
-  iphf->id                   = 0;
-  iphf->ttl                  = IPDEFTTL;
-  iphf->src.s_addr           = htonl(INADDR_ANY);
-  iphf->dst.sin_addr.s_addr  = 0;
-  iphf->router.s_addr	     = 0;
-  iphf->error		     = 0;
-  iphf->fake_ttl	     = 0;
-  iphf->fake_proto	     = IPPROTO_TCP;
-  iphf->fake_id		     = 0;
-  iphf->fake_len	     = 0;
-  iphf->link_mtu	     = 0;
-  iphf->param_ptr	     = 0;
-  return;
+	iphf->tos                  = 0;
+	iphf->length               = 0;
+	iphf->id                   = 0;
+	iphf->ttl                  = IPDEFTTL;
+	iphf->src.s_addr           = htonl(INADDR_ANY);
+	iphf->dst.sin_addr.s_addr  = 0;
+	iphf->router.s_addr	   = 0;
+	iphf->error		   = 0;
+	iphf->fake_ttl	     	   = 0;
+	iphf->fake_proto	   = IPPROTO_TCP;
+	iphf->fake_id		   = 0;
+	iphf->fake_len	     	   = 0;
+	iphf->link_mtu	           = 0;
+	iphf->param_ptr	           = 0;
+	return;
 }
 
 int proto(char *protocol) {
   
-  if (!strcmp(protocol,"tcp")) 
-    return(IPPROTO_TCP);
-  else if (!strcmp(protocol,"udp"))
-    return(IPPROTO_UDP);
-  else {
-    fprintf(stderr,"Protocol not know!\n");
-    exit(EXIT_FAILURE);
-  }
+	if (!strcmp(protocol, "tcp")) 
+		return(IPPROTO_TCP);
+	else if (!strcmp(protocol, "udp"))
+		return(IPPROTO_UDP);
+	else {
+		fprintf(stderr,"Protocol not know!\n");
+		exit(EXIT_FAILURE);
+	}
   
-  return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 /*
  * inet_pton(3) wrapper
  */
 
-int Inet_pton(int af,const char *src,void *dst) {
+int Inet_pton(int af, const char *src, void *dst) {
   
-  int res;
+	int res;
   
-  if ( (res=inet_pton(af,src,dst)) < 0) {
-    perror("inet_pton error");       
-    exit(EXIT_FAILURE);
-  }
-  else if (res == 0) {
-    printf("No valid network address!\n");     
-    exit(EXIT_FAILURE);
-  }
+	if ( (res = inet_pton(af, src, dst)) < 0) {
+		perror("inet_pton error");       
+		exit(EXIT_FAILURE);
+	}
+	else if (res == 0) {
+		printf("No valid network address!\n");     
+		exit(EXIT_FAILURE);
+	}
   
-  return(1);
+	return(1);
 }
 
 

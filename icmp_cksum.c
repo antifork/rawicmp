@@ -43,7 +43,7 @@ unsigned short in_cksum(unsigned short *addr,int len) {
          */
         while (nleft > 1)  {
                 sum += *w++;
-         nleft -= 2;
+		nleft -= 2;
         }
         
         /* mop up an odd byte, if necessary */

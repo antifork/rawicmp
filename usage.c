@@ -26,15 +26,12 @@
 
 void help(char *name) {
 
-printf("\nRawICMP : raw ICMP packets generator");
-printf("\nversion %s\n",
-			RAWICMPVERSION);
-printf("Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>\n");
+	printf("\nRawICMP : raw ICMP packets generator");
+	printf("\nversion %s\n", RAWICMPVERSION);
+	printf("Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>\n");
+	printf("\nUsage : %s [options] \n", name);
 
-printf("\nUsage : %s [options] \n",
-			name);
-
-printf ("Options:
+	printf ("Options:
 -h   --help             :prints this help
 
 ICMP queries

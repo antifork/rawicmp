@@ -1,17 +1,17 @@
+Installation is quite simple. First of all you should run
 
-Before all, login as root and ...
+	./configure
 
-1.- Compilation:
-    Take a look into the Makefile and after:
+Then take a look to generated Makefile and you think everything
+is ok than compile through
 
-            make rawicmp
+	make
 
-2.- Installation:
-    By default the program installs itself into /usr/local/bin, you can
-    change it with the Makefile variable PREFIX. For installing:
+Now let's install. You need superuser privileges. So
+	su
+	<root password>
+	make install
 
-            make install
-
-Have fun.
+That's all. Have fun!
 
 

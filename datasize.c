@@ -35,32 +35,32 @@
 
 int data_size(int icmptype) {
 
-  switch(icmptype) {
-  case ICMP_ECHO :
-  case ICMP_ECHOREPLY :
-                         return ECHO_DATA_SIZE;
-	       	         break;
-  case ICMP_TIMESTAMP :
-  case ICMP_TIMESTAMPREPLY : 
-                         return TIME_DATA_SIZE;
-			 break;
-  case ICMP_INFO_REQUEST :
-  case ICMP_INFO_REPLY :
-                         return INFO_DATA_SIZE;
-			 break;
-  case ICMP_ADDRESS :
-  case ICMP_ADDRESSREPLY :
-                         return ADDR_DATA_SIZE;
-			 break;
-  case ICMP_SOURCE_QUENCH :
-  case ICMP_TIME_EXCEEDED :
-  case ICMP_DEST_UNREACH :
-  case ICMP_REDIRECT :
-  case ICMP_PARAMETERPROB :
-			 return ERROR_DATA_SIZE;
-			 break;
-  default:
-			 return DEF_DATA_SIZE;
-                         break;
-  }
+	switch(icmptype) {
+	case ICMP_ECHO :
+	case ICMP_ECHOREPLY :
+		return ECHO_DATA_SIZE;
+		break;
+	case ICMP_TIMESTAMP :
+	case ICMP_TIMESTAMPREPLY : 
+		return TIME_DATA_SIZE;
+		break;
+	case ICMP_INFO_REQUEST :
+	case ICMP_INFO_REPLY :
+		return INFO_DATA_SIZE;
+		break;
+	case ICMP_ADDRESS :
+	case ICMP_ADDRESSREPLY :
+		return ADDR_DATA_SIZE;
+		break;
+	case ICMP_SOURCE_QUENCH :
+	case ICMP_TIME_EXCEEDED :
+	case ICMP_DEST_UNREACH :
+	case ICMP_REDIRECT :
+	case ICMP_PARAMETERPROB :
+		return ERROR_DATA_SIZE;
+		break;
+	default:
+		return DEF_DATA_SIZE;
+		break;
+	}
 }
