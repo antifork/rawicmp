@@ -1,9 +1,6 @@
 /* icmp.h
 **
-** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the help 
-** he gave me in writing this code.
-**
-** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>  
+** Copyright (C) 2001-03 Angelo Dell'Aera 'buffer' <buffer@antifork.org>  
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -64,7 +61,7 @@
 #define ATOI8(optarg)	((atoi(optarg) > UCHAR_MAX) ? UCHAR_MAX : (atoi(optarg)))
 #define ATOI16(optarg)  ((atoi(optarg) > USHRT_MAX) ? USHRT_MAX : (atoi(optarg)))
 
-#define RAWICMPVERSION "0.6.0"
+#define RAWICMPVERSION VERSION
 
 struct ip_header_fields {
 	uint8_t             tos;
@@ -101,20 +98,12 @@ struct ip *ip_hdr_make(unsigned char *, int, struct ip_header_fields *);
 struct icmp *icmp_hdr_make(unsigned char *, int, unsigned int, struct
 			   ip_header_fields *);
 int dlink_open(char *);
-int code_make(unsigned int, int);
-void verbose_iphdr(struct ip *);
-void verbose_icmphdr(struct icmp *);
 int data_size(int);
 int Inet_pton(int, const char *, void *);
 void init_ipheader(struct ip_header_fields *);
 int proto(char *);
-void timestamp_verbose(struct icmp *);
-void timestampreply_verbose(struct icmp *);
-void addressreply_verbose(struct icmp *);
-int icmpreply(struct icmp *);
+int icmp_reply(struct icmp *);
 void dump(const char *, int);
 void help(char *);
-void parse_options(int, char **, struct options *, struct ip_header_fields *);
-void init_opt(struct options *);
 
 #endif	/* _RAWICMP_H_ */

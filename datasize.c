@@ -1,9 +1,6 @@
 /* datasize.c
 **
-** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the
-** help he gave me in writing this code.
-**
-** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>
+** Copyright (C) 2001-03 Angelo Dell'Aera 'buffer' <buffer@antifork.org>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by

@@ -1,9 +1,6 @@
 /* iphdr.c
 **
-** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the help
-** he gave me in writing this code.
-**
-** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>  
+** Copyright (C) 2001-03 Angelo Dell'Aera 'buffer' <buffer@antifork.org>  
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -26,9 +23,9 @@
 #include "icmp.h"
 
 /*
-** Function for creating IP header.
-** It's important to observe DF flag is set on.I'll modify this part of code
-** for allowing the user to set flag he wants.
+ * Function for creating IP header.
+ * It's important to observe DF flag is set on. I'll modify this part of code
+ * for allowing the user to set flag he wants.
 */
 
 struct ip *ip_hdr_make(unsigned char *buf, int icmp_type,
@@ -61,14 +58,3 @@ struct ip *ip_hdr_make(unsigned char *buf, int icmp_type,
 
 }
 
-/*
-** Function used in 'verbose mode'
-*/
-
-void verbose_iphdr(struct ip *iphdr)
-{
-
-	printf("IP Identification Number : %d  ", ntohs(iphdr->ip_id));
-	printf("Time To Live : %d\n", iphdr->ip_ttl);
-	return;
-}

@@ -1,9 +1,7 @@
+
 /* usage.c
 **
-** A great "thank you" to Lorenzo Cavallaro 'Gigi Sullivan' for the
-** help he gave me in writing this code.
-**
-** Copyright (C) 2001-02 Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>  
+** Copyright (C) 2001-03 Angelo Dell'Aera 'buffer' <buffer@antifork.org>  
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -29,49 +27,44 @@ void help(char *name)
 
 	printf("\nRawICMP : raw ICMP packets generator");
 	printf("\nversion %s\n", RAWICMPVERSION);
-	printf
-	    ("Angelo Dell'Aera 'buffer' <buffer@users.sourceforge.net>\n");
+	printf("Angelo Dell'Aera 'buffer' <buffer@antifork.org>\n");
 	printf("\nUsage : %s [options] \n", name);
 
-	printf("Options:
--h   --help             :prints this help
+	printf("Options: \n\n"
+	"-h   --help             : prints this help\n\n"
+	"ICMP queries\n"
+	"-E   --echo             : generates an ICMP echo request\n"
+	"-T   --timestamp        : generates an ICMP timestamp request\n"  
+	"-I   --info             : generates an ICMP information request\n"
+	"-M   --mask             : generates an ICMP mask request\n\n" 
+	"ICMP error messagges\n"
+	"-S   --source           : generates an ICMP source quench\n"
+	"-X   --time             : generates an ICMP TTL exceeded\n"
+	"-U   --unreach		: generates an ICMP destination unreachable\n"
+	"-R   --redirect         : generates an ICMP redirect (it needs router\n"
+	"		 	  address as argument)\n"
+	"-P   --parameter	: generates an ICMP parameter problem\n"
+	"-e   --code		: ICMP code (only for ICMP TTL exceeded,\n"
+	"		 	  ICMP destination unreachable,ICMP\n"
+        "                 	  redirect and ICMP parameter problem)\n"
+	"-m   --mtu	        : link MTU (only for ICMP destination\n"
+	"		 	  unreachable ICMP_FRAG_NEEDED (code 4))\n"
+	"-p   --paramptr\t	: pointer in ICMP parameter problem code 0\n\n"
+	"Options for both ICMP queries and error messages\n\n"
+	"-s   --src              : source IP\n"
+	"-d   --dst              : destination IP\n"
+	"-i   --iface		: interface\n"
+	"-c   --count            : number of packets to send\n"
+	"-v   --verbose          : verbose mode\n"
+	"-x   --extraverbose     : extra-verbose mode\n"
+	"-t   --ttl		: time to live\n"
+	"-n   --id		: IP identification value\n\n"
+	"Options for ICMP error messages (ignored for ICMP queries)\n\n"
+	"-f   --fakeproto	: protocol in fake IP header\n"
+	"-k   --fakettl		: TTL in fake IP header\n"
+	"-a   --fakeid		: IP identification value in fake IP header\n"
+	"-l   --fakelength       : total length in fake IP header\n"
 
-ICMP queries
--E   --echo             :generates an ICMP echo request
--T   --timestamp        :generates an ICMP timestamp request  
--I   --info             :generates an ICMP information request
--M   --mask             :generates an ICMP mask request 
-
-ICMP error messagges
--S   --source           :generates an ICMP source quench
--X   --time             :generates an ICMP TTL exceeded
--U   --unreach		:generates an ICMP destination unreachable
--R   --redirect         :generates an ICMP redirect (it needs router
-			 address as argument)
--P   --parameter	:generates an ICMP parameter problem
--e   --code		:ICMP code (only for ICMP TTL exceeded,
-			 ICMP destination unreachable,ICMP
-                         redirect and ICMP parameter problem)
--m   --mtu		:link MTU (only for ICMP destination
-			 unreachable ICMP_FRAG_NEEDED (code 4))
--p   --paramptr		:pointer in ICMP parameter problem code 0
-
-Options for both ICMP queries and error messages
--s   --src              :source IP
--d   --dst              :destination IP
--i   --iface		:interface
--c   --count            :number of packets to send
--v   --verbose          :verbose mode
--x   --extraverbose     :extra-verbose mode
--t   --ttl		:time to live
--n   --id		:IP identification value
-
-Options for ICMP error messages (ignored for ICMP queries)
--f   --fakeproto	:protocol in fake IP header
--k   --fakettl		:ttl in fake IP header
--a   --fakeid		:IP identification value in fake IP header
--l   --fakelength       :total length in fake IP header
-
-	\n");
+	"\n");
 
 }

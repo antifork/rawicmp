@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(rawicmp, 0.6.1, buffer@users.sourceforge.net)
+AC_INIT(rawicmp, 0.9.0, buffer@antifork.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([orig_timestamp.c])
 AC_CONFIG_HEADER([config.h])
