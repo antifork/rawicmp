@@ -464,13 +464,13 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,rawicmp,;t t
 s,@VERSION@,0.6.1,;t t
-s,@ACLOCAL@,${SHELL} /home/buffer/misc/rawicmp/missing --run aclocal-1.7,;t t
-s,@AUTOCONF@,${SHELL} /home/buffer/misc/rawicmp/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/buffer/misc/rawicmp/missing --run automake-1.7,;t t
-s,@AUTOHEADER@,${SHELL} /home/buffer/misc/rawicmp/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/buffer/misc/rawicmp/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/buffer/misc/rawicmp/missing --run tar,;t t
-s,@install_sh@,/home/buffer/misc/rawicmp/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run aclocal-1.7,;t t
+s,@AUTOCONF@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run automake-1.7,;t t
+s,@AUTOHEADER@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/buffer/rawicmp-0.6.1/missing --run tar,;t t
+s,@install_sh@,/home/buffer/rawicmp-0.6.1/install-sh,;t t
 s,@STRIP@,,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t
