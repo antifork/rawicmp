@@ -82,8 +82,6 @@ struct ip_header_fields {
 			u_char		      param_ptr;
 			};
 
-sigjmp_buf	buf;
-
 extern unsigned short in_cksum(unsigned short *,int);  
 uint32_t orig_timestamp(void);
 void resolve (struct sockaddr_in *,char *);

@@ -25,9 +25,7 @@
 #ifndef _RAWICMPMAIN_H_
 #define _RAWICMPMAIN_H
 
-#include <signal.h>
 #include <getopt.h>
-
 
 struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},
