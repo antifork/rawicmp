@@ -1,0 +1,17 @@
+
+Before all, login as root and ...
+
+1.- Compilation:
+    Take a look into the Makefile and after:
+
+            make rawicmp
+
+2.- Installation:
+    By default the program installs itself into /usr/local/bin, you can
+    change it with the Makefile variable PREFIX. For installing:
+
+            make install
+
+Have fun.
+
+

@@ -1,0 +1,19 @@
+
+Sun Sep 2 17:57:00 GMT 2001
+
+This  program  was  started  because  I  wanted  to  learn  using  raw
+socket.Later I  understood it could become more  than a  simple source
+file (as it was at the beginning).
+
+I just want to thank two  persons which helped me in a very incredible
+way in writing this code.
+
+The first one is surely  Lorenzo Cavallaro 'Gigi Sullivan'.  He helped
+me  in  solving  a lot  of  problems  during  my  "writing".  He  also
+suggested  me the  idea of  receiving through  a  PF_PACKET/SOCK_DGRAM
+socket and  this is  surely the greatest  part of my  code.Without his
+help my code wouldn't be what it's now!
+
+The second  one is W.  Richard Stevens.His works were  fundamental for
+obtaining what I did.
+

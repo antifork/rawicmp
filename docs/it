@@ -1,0 +1,159 @@
+Consideriamo un primo  esempio e inviamo un echo  request a debian.org
+(198.186.203.20).Si  tenga presente  che per  inviare un  pacchetto di
+questo  tipo esiste  l'opzione  -E  ma di  default  questa opzione  e'
+settata  e quindi  possiamo anche  evitare di  richiamarla.   Una nota
+importante  e'  che  dalla   versione  0.1.3  il  programma  riesce  a
+determinare   automaticamente   l'indirizzo   IP  sorgente   associato
+all'interfaccia attraverso la quale si trasmette.
+Quindi l'opzione  -s dovrebbe essere  utilizzata soltanto nel  caso in
+cui si  voglia utilizzare un  indirizzo IP sorgente  spoofed.Mi sembra
+superfluo  sottolineare  che nel  caso  in cui  si  faccia  uso di  un
+indirizzo IP sorgente spoofed  il pacchetto verra' routato comunque ma
+ovviamente non possiamo attenderci nessuna risposta a tale query.
+
+Ritornando al nostro esempio, specifico da linea di comando l'hostname
+(in  alternativa  potrei  anche  usare  l'indirizzo  IP  destinazione)
+.Inoltre  sto  specificando  che  l'interfaccia  sulla  quale  intendo
+ricevere  e'  la  ppp0  (se  non viene  specificata  l'interfaccia  il
+programma ascolterà su tutte le interfaccie di rete).
+
+[root@localhost current]# rawicmp -d debian.org -i ppp0
+
+ICMP request 1
+
+Sending  an ICMP  type ICMP_ECHO  to 198.186.203.20  (amount  of bytes
+84)...
+Received an  ICMP type  ICMP_ECHOREPLY from 198.186.203.20  (amount of
+bytes 84) 
+rtt = 185 ms     
+
+Received packets : 1
+
+Ripetiamo la stessa operazione in modalita' verbose.
+
+[root@localhost current]# rawicmp -d debian.org -i ppp0 -v
+ 
+ICMP request 1
+ 
+Sending ICMP_ECHO to 198.186.203.20...
+ 
+Sent ICMP packet fields :
+-------------------------
+IP Identification Number : 0x4567
+Time To Live : 64
+ICMP type : ICMP_ECHO
+ICMP Sequence Number : 9158
+ICMP ID Number : 1438
+ 
+ 
+Received ICMP packet fields :
+-----------------------------
+IP Identification Number : 0x5593
+Time To Live : 239
+ICMP type : ICMP_ECHOREPLY
+ICMP Sequence Number : 9158
+ICMP ID Number : 1438
+ 
+rtt = 249 ms
+ 
+Received packets : 1
+
+Come  si puo'  osservare la  modalita' verbose  ci consente  di vedere
+alcuni fields importanti dell'header IP e dell'header ICMP.
+
+Vediamo  adesso   un  esempio  di   invio  di  un   timestamp  request
+all'indirizzo   IP   198.186.203.20   (debian.org).Ho  utilizzato   la
+modalita' verbose in modo  da poter visualizzare l'originate timestamp
+e il received timestamp.Dalla differenza tra i due valori e' possibile
+valutare  il  RTT  (round-trip time).   In realta'  per  avere  valori
+attendibili sarebbe  necessario inviare un certo numero  di queries di
+questo tipo e mediare i risultati ottenuti.A breve scrivero' un modulo
+che faccia questo in automatico.
+
+[root@localhost current]# rawicmp -T -d debian.org -i ppp0 -v
+ 
+ICMP request 1
+ 
+Sending ICMP_TIMESTAMP to 198.186.203.20...
+ 
+Sent ICMP packet fields :
+-------------------------
+IP Identification Number : 0x4567
+Time To Live : 64
+ICMP type : ICMP_TIMESTAMP
+ICMP Sequence Number : 9158
+ICMP ID Number : 1439
+Originate Timestamp : 01bb6126
+ 
+ 
+Received ICMP packet fields :
+-----------------------------
+IP Identification Number : 0x5f4a
+Time To Live : 239
+ICMP type : ICMP_TIMESTAMPREPLY
+ICMP Sequence Number : 9158
+ICMP ID Number : 1439
+Receive Timestamp : 01bce27e
+ 
+rtt = 179 ms
+
+Received packets : 1
+       
+Nel   nostro  caso   0x1bc327e-0x1bb6126=0xd158   ossia  in   decimale
+53592.Questo significa  53.592 secondi il che e'  indicativo del fatto
+che non c'e' sincronizzazione tra i  clock dei due host (non avrei mai
+potuto  ricevere il  reply  dopo un  tempo  cosi' grande  a causa  del
+timeout implementato  nel codice).Infatti  si nota che  l'rtt ottenuto
+per altra  via,analizzando il momento  in cui il datagramma  parte dal
+nostro  host e il  momento in  cui il  reply giunge  a destinazione,ci
+indica 179ms.
+
+Il programma  prevede anche la  possibilita' di inviare altri  tipi di
+queries ICMP  come l'ICMP information  request (che e'  ormai obsoleto
+comunque) e l'ICMP address mask request.
+Inoltre in presenza  di errori il programma riesce  a gestirli come si
+puo' osservare dai seguenti esempi.
+
+[root@localhost current]#  rawicmp  -d  debia.org  -c  3  -i  ppp0  -v
+gethostbyname error for host : debia.org Unknown host
+
+Questo errore e' generato dal fatto  che il server DNS non e' riuscito
+a  risolvere debia.org.   Se  invece l'host  destinazione non  dovesse
+essere  raggiungibile   questo  ci   verra'  notificato  da   un  ICMP
+destination unreachable come si puo' osservare dall'esempio seguente.
+
+[root@localhost current]# rawicmp -d 175.253.45.87 -i ppp0 -v
+
+ICMP request 1
+ 
+Sending ICMP_ECHO to 175.253.45.87...
+ 
+Sent ICMP packet fields :
+-------------------------
+IP Identification Number : 0x4567
+Time To Live : 64
+ICMP type : ICMP_ECHO
+ICMP Sequence Number : 9158
+ICMP ID Number : 2025
+ 
+ 
+Received ICMP packet fields :
+-----------------------------
+IP Identification Number : (nil)
+Time To Live : 253
+ICMP type : ICMP_DEST_UNREACH
+ICMP Sequence Number : 0
+ICMP ID Number : 0
+ 
+rtt = 88 ms
+ 
+Received packets : 1
+
+Questo discorso vale per tutti i messaggi di errore notificati tramite
+il protocollo ICMP.
+
+
+
+
+
+
