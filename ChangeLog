@@ -1,0 +1,68 @@
+-version 0.6.0 :
+Minor bug fixes.
+
+-version 0.5.0 :
+Now every kind of ICMP can be generated.
+Minor bug fixes.
+
+-version 0.2.0 : 
+There were many  changes in handling and building  IP header.Now I use
+struct ip_header_fields  for this purpose.I needed a  solution of this
+kind because I wanted ip_hdr_make() could work even when I'll add some
+other   features   such  as   IP   options   without  modifying   main
+(icmp.c).After few test I can say it works well.  
+Now it's  possible to  generate some ICMP  error messages such  as TTL
+exceeded and source quench.In this case  a fake IP header is built and
+it is  located after  ICMP  header just like  it happens in  real ICMP
+error  messages.  It's possible  for the  user to  build this  fake IP
+header  too through command-line  options.  
+It was implemented a new  timeout for receiving.Infact through the use
+of a signal SIGALRM now when recvfrom(2) remains blocked for more than
+RECEIVE_TIMEOUT seconds  it is  notified to the  user and  the program
+continues.
+Minor bug fixes.
+
+-version 0.1.4 :
+Introduced  a new  feature.Now when  -s  option is  not specified  the
+program  reaches  to  obtain  IP  source  (reading  it  directly  from
+interface)  and writing  it in  IP header.In  this way  the  option -s
+should  be  used  only  if  one  wants to  spoof  source  IP  address.
+Introduced address name resolution for -d option.
+
+-version 0.1.3 :
+Added documentation (in italian).  
+Minor bug fixes.
+
+-version 0.1.2 :
+Fixed a problem about timeout.In  the previous versions I used SIGALRM
+for  implementing timeout  but  now  I reached  to  realize a  cleaner
+timeout simply using sleep(3).
+Implemented a  better approach for filtering  packets entering through
+receiving socket.
+
+-version 0.1.1 :
+Fixed a minor bug in option -c.
+
+-version 0.1.0 :
+Introduced the  option -c for sending  a precise number  of ICMP query
+packets.
+
+-version 0.0.5 :
+ Fixed a potential buffer overflow.  
+Minor bug fixes.
+ 
+-version 0.0.4 :
+Minor bug fixes.
+
+-version 0.0.3 :
+Thanks to Lorenzo  Cavallaro 'Gigi Sullivan' I reached  to introduce a
+receiving socket linked to a specific interface.
+
+-version 0.0.2 :
+Fixed the previous problem.
+
+-version 0.0.1 :
+The code is  not good at all!It isn't able to  receive replies to ICMP
+queries.
+
+
